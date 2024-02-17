@@ -5,11 +5,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./index.css";
+import Root from "./routes/root";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Home</div>,
+    element: <Root/>,
+    children: [
+      {
+        path: "/",
+        element: <React.Suspense fallback={<div>Loading...</div>}/>,
+        Component: React.lazy(() => import("./pages/Home")),
+      },
+    ],
   },
 ]);
 
