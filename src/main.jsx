@@ -17,6 +17,11 @@ const router = createBrowserRouter([
         element: <React.Suspense fallback={<div>Loading...</div>}/>,
         Component: React.lazy(() => import("./pages/Home")),
       },
+      {
+        path: "/signup",
+        element: <React.Suspense fallback={<div>Loading...</div>}/>,
+        Component: React.lazy(() => import("./pages/Signup")),
+      },
     ],
   },
 ]);
