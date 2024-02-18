@@ -12,7 +12,7 @@ export default function Topics() {
       const topicsMapped = topics.map((topic) => {  
         return {
           name: topic.name,
-          coverImage: topic.coverImage,
+          coverImage: `data:image/png;base64, ${topic.coverImage}`,
         }
       });
       setTopics(topicsMapped);

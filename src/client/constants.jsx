@@ -5,15 +5,15 @@ const endpoints = {
   },
   category: {
     get: '/category',
-    post: '/content',
+    post: '/category',
   },
   content: {
     get: '/content',
     post: '/content',
   },
   topic: {
-    get: '/topics',
-    post: '/topics',
+    get: '/topic',
+    post: '/topic',
   },
 }
 
