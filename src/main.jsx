@@ -12,6 +12,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Topic from "./pages/Topic";
+import Content from "./pages/Content";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,17 @@ const router = createBrowserRouter([
           <Login/>
         </React.Suspense>,
       },
+      {
+        path: "/topic/:id",
+        element: <React.Suspense fallback={<div>Loading...</div>}>
+          <Topic/>
+        </React.Suspense>,
+      },{
+        path: "/content/:id",
+        element: <React.Suspense fallback={<div>Loading...</div>}>
+          <Content/>
+        </React.Suspense>,
+      }
     ],
   },
 ]);

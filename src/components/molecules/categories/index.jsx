@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Selectable from "../../atoms/buttons/selectable";
 import client from "../../../client";
 
-export default function Categories() {
+export default function Categories({ filterTopics }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -10,7 +10,9 @@ export default function Categories() {
       const response = await client.category.getCategories();
       const { data: categories } = response;
       const categoriesMapped = categories.map((category) => {
+        filterTopics(category.id, true);
         return {
+          id: category._id,
           name: category.name,
           selected: true,
         }
@@ -28,7 +30,7 @@ export default function Categories() {
         </div>
       )}
       {categories.map((category, index) => (
-        <Selectable key={index} selected={category.selected}>{category.name}</Selectable>
+        <Selectable onChange={(newState)=>filterTopics(category.id, newState)} key={index} selected={category.selected}>{category.name}</Selectable>
       ))}
     </div>
   )

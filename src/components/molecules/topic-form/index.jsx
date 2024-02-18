@@ -69,9 +69,9 @@ export default function TopicForm({ onSuccess, onAbort }) {
 
             <label>Categorías</label>
             {categories.map((category) => (
-              <div key={category._id}>
-                <input type="checkbox" id={category._id} {...register('categories', { required: 'Este campo es requerido' })} value={category._id} />
-                <label htmlFor={category._id}>{category.name}</label>
+              <div key={category._id} className='flex gap-0'>
+                <input className='max-w-4 ml-0 mr-2' type="checkbox" id={category._id} {...register('categories', { required: 'Este campo es requerido' })} value={category._id} />
+                <label  className='w-96 p-0'>{category.name}</label>
               </div>
             ))}
 

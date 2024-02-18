@@ -30,3 +30,4 @@ export const SESSION_TYPES = {
 
 export const DEFAULT_USER = SESSION_TYPES.guest.name;
 export const ADMIN_USER = SESSION_TYPES.admin.name;
+export const CREATOR_USER = SESSION_TYPES.admin.name;

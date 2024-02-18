@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { SESSION_TYPES, DEFAULT_USER, ADMIN_USER } from "../../../utils/constants";
+import { SESSION_TYPES, DEFAULT_USER, ADMIN_USER, CREATOR_USER } from "../../../utils/constants";
 import Button from "../../atoms/buttons/button";
 import sessionActions from "../../../redux/actions/sessionActions";
 import Modal from "../../atoms/modal";
@@ -24,6 +24,11 @@ export default function Navbar() {
       setSessionType(SESSION_TYPES[DEFAULT_USER].name);
     }
   }, [currentSession]);
+
+  const refresh = () => {
+    setActiveModal('');
+    window.location.reload();
+  }
 
   const handleLogout = () => {
     dispatch({type: sessionActions.REMOVE_SESSION});
@@ -48,8 +53,8 @@ export default function Navbar() {
         ) || (
           <div>
             <Link className="text-gray-200 hover:text-white mr-4" to='/dashboard'>Bienvenido {currentSession.user.username}</Link>
-            {sessionType === ADMIN_USER && (<Button onClick={()=>{setActiveModal('addCategory')}} className="bg-green-400 rounded border-solid border-2 border-green-600 text-gray-600 mr-2">Agregar categoría</Button>)}
-            {sessionType === ADMIN_USER && (<Button onClick={()=>{setActiveModal('addTopic')}} className="bg-green-400 rounded border-solid border-2 border-green-600 text-gray-600 mr-2">Agregar temática</Button>)}
+            {(sessionType == ADMIN_USER || CREATOR_USER) && (<Button onClick={()=>{setActiveModal('addCategory')}} className="bg-green-400 rounded border-solid border-2 border-green-600 text-gray-600 mr-2">Agregar categoría</Button>)}
+            {(sessionType == ADMIN_USER || CREATOR_USER) && (<Button onClick={()=>{setActiveModal('addTopic')}} className="bg-green-400 rounded border-solid border-2 border-green-600 text-gray-600 mr-2">Agregar temática</Button>)}
             <Button onClick={()=> setActiveModal('addContent')} className="bg-green-400 rounded border-solid border-2 border-green-600 text-gray-600 mr-2">Subir Contenido</Button>
             <Button className="text-gray-200 hover:text-white" onClick={()=>handleLogout()}>Cerrar Sesión</Button>
           </div>
@@ -58,17 +63,17 @@ export default function Navbar() {
       
       {activeModal === 'addCategory' && (
         <Modal title="Agregar categoría" show={true} onClose={()=>setActiveModal('')}>
-          <Categoryform onSuccess={()=>setActiveModal('')} onAbort={()=>setActiveModal('')} />
+          <Categoryform onSuccess={()=>refresh()} onAbort={()=>setActiveModal('')} />
         </Modal>
       )}
       {activeModal === 'addTopic' && (
         <Modal title="Agregar temática" show={true} onClose={()=>setActiveModal('')}>
-          <TopicForm onSuccess={()=>setActiveModal('')} onAbort={()=>setActiveModal('')}/>
+          <TopicForm onSuccess={()=>refresh('')} onAbort={()=>setActiveModal('')}/>
         </Modal>
       )}
       {activeModal === 'addContent' && (
         <Modal title="Subir Contenido" show={true} onClose={()=>setActiveModal('')}>
-          <ContentForm onSuccess={()=>setActiveModal('')} onAbort={()=>setActiveModal('')}/>
+          <ContentForm onSuccess={()=>refresh('')} onAbort={()=>setActiveModal('')}/>
         </Modal>
       )}
     </nav>

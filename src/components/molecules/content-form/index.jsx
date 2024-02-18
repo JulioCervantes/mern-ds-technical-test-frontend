@@ -28,15 +28,34 @@ export default function ContentForm({ onSuccess, onAbort }) {
     onSuccess();
   };
 
+  const getDataType = (file) => {
+    const type = file.type;
+    let fileType = '';
+    if (type.includes('image')) {
+      fileType = 'image';
+    } else if (type.includes('text')) {
+      fileType = 'text';
+    }
+    if(contentTypes[fileType]){
+      return fileType;
+    }
+    throw {error: 'INVALID_FILE_TYPE',message:'El tipo de archivo no es válido'};
+  }
+
   const onSubmit = async (data) => {
     const formData = new FormData();
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key]);
-    });
-    formData.append('data', data.contentFile[0]);
     setClientError({});
     try {
-      console.log(currentSession);
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+      if(data?.contentFile){
+        formData.append('data', data.contentFile[0]);
+        formData.append('dataType', getDataType(data.contentFile[0]));
+      }else if(data?.contentURL){
+        formData.append('data', data.contentURL);
+        formData.append('dataType', 'video');
+      }
       const response = await client.content.create(formData,currentSession.token);
       if (response?.data?.created) {
         creationSuccess();
@@ -50,7 +69,12 @@ export default function ContentForm({ onSuccess, onAbort }) {
         }
         return setClientError({ error: 'Hubo un error al intentar crear el contenido' });
       }
-      setClientError(error);
+      console.log({ error });
+      if(error.message){
+        setClientError({error: error.message});
+      }else {
+        setClientError(error);
+      }
       console.log({ error });
     }
   };
