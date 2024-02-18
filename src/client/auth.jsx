@@ -1,4 +1,4 @@
-import endpoints from "./constant";
+import endpoints from "./constants";
 
 export default function Auth({client}) {
   return {
