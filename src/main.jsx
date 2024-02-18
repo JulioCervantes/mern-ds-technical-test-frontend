@@ -6,21 +6,35 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import Root from "./routes/root";
+import { Provider } from "react-redux";
+import { persistor, store } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import Home from "./pages/Home";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>,
+    element: <Root />,
     children: [
       {
         path: "/",
-        element: <React.Suspense fallback={<div>Loading...</div>}/>,
-        Component: React.lazy(() => import("./pages/Home")),
+        element: <React.Suspense fallback={<div>Loading...</div>}>
+          <Home />
+        </React.Suspense>,
       },
       {
         path: "/signup",
-        element: <React.Suspense fallback={<div>Loading...</div>}/>,
-        Component: React.lazy(() => import("./pages/Signup")),
+        element: <React.Suspense fallback={<div>Loading...</div>}>
+          <Signup/>
+        </React.Suspense>,
+      },
+      {
+        path: "/login",
+        element: <React.Suspense fallback={<div>Loading...</div>}>
+          <Login/>
+        </React.Suspense>,
       },
     ],
   },
@@ -28,6 +42,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <RouterProvider router={router} />
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
